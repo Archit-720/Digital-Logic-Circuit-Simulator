@@ -31,6 +31,7 @@ Physical digital logic experiments rely heavily on breadboards and integrated ci
 * **Expression Parser:** Parses standard boolean string expressions using Stacks.
 * **Circuit Routing Engine:** Connects gates and manages signal flow using Directed Acyclic Graphs (DAGs).
 * **Database Layer:** Saves and loads local circuit configurations via `.txt` files.
+* **Number system converter:** It converts any Radix r from one number system to another number system.
 
 ## Current Project Status / Progress
 * **Status:** In Development (Initial Architecture Phase)
