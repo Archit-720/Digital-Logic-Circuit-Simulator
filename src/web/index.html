@@ -1,0 +1,59 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Circuit Validator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Digital Circuit Validator</h1>
+        <p>Build a logic circuit and check its connections.</p>
+    </header>
+
+    <main>
+        <section class="toolbar">
+            <h2>Components</h2>
+
+            <button data-component="INPUT">Add Input</button>
+            <button data-component="AND">Add AND Gate</button>
+            <button data-component="OR">Add OR Gate</button>
+            <button data-component="NOT">Add NOT Gate</button>
+            <button data-component="LED">Add LED</button>
+
+            <button id="connectButton">Connect Components</button>
+            <button id="validateButton">Validate Circuit</button>
+            <button id="clearButton">Clear Circuit</button>
+        </section>
+
+        <section class="workspace-section">
+            <h2>Circuit Workspace</h2>
+
+            <p class="instructions">
+                Click a component to select it. To connect components,
+                click Connect Components, then select a source and destination.
+            </p>
+
+            <div id="canvas" aria-label="Circuit workspace"></div>
+        </section>
+
+        <section class="results">
+            <h2>Validation Results</h2>
+            <p id="status">Add components and validate your circuit.</p>
+            <ul id="errorList"></ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>Phase 1 — Circuit Validation Interface</p>
+    </footer>
+
+    <script src="js/canvas.js"></script>
+    <script src="js/validator.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+```
