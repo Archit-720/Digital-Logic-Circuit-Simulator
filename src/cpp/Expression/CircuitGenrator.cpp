@@ -1,4 +1,4 @@
-#include "CircuitGenerator.h"
+#include "CircuitGenrator.h"
 
 #include "../gates/BasicGates.h"
 
