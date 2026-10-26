@@ -1,4 +1,4 @@
-#include "CircuitGenrator.h"
+#include "CircuitGenerator.h"
 
 #include "../gates/BasicGates.h"
 
@@ -16,11 +16,14 @@ int GeneratedCircuit::getOutputNode() const {
     if (outputNodeId < 0) {
         throw std::logic_error("The generated circuit has no output node.");
     }
+
     return outputNodeId;
 }
 
-int GeneratedCircuit::getVariableNode(const std::string& variableName) const {
-    for (std::size_t i = 0; i < variableNames.size(); i++) {
+int GeneratedCircuit::getVariableNode(
+    const std::string& variableName
+) const {
+    for (std::size_t i = 0; i < variableNames.size(); ++i) {
         if (variableNames[i] == variableName) {
             return variableNodeIds[i];
         }
@@ -38,7 +41,7 @@ const std::vector<int>& GeneratedCircuit::getGateNodeIds() const {
 }
 
 const Gate& GeneratedCircuit::getGate(int nodeId) const {
-    for (std::size_t i = 0; i < gateNodeIds.size(); i++) {
+    for (std::size_t i = 0; i < gateNodeIds.size(); ++i) {
         if (gateNodeIds[i] == nodeId) {
             return *gateObjects[i];
         }
@@ -47,14 +50,21 @@ const Gate& GeneratedCircuit::getGate(int nodeId) const {
     throw std::invalid_argument("No gate is stored for this node ID.");
 }
 
-GeneratedCircuit CircuitGenerator::generate(const std::string& expression) const {
-    std::vector<std::string> postfix = parser.toPostfix(expression);
-    std::vector<std::string> variables = parser.getVariables(expression);
+GeneratedCircuit CircuitGenerator::generate(
+    const std::string& expression
+) const {
+    const std::vector<std::string> postfix =
+        parser.toPostfix(expression);
+
+    const std::vector<std::string> variables =
+        parser.getVariables(expression);
+
     GeneratedCircuit generated;
     std::vector<int> nodeStack;
 
     for (const std::string& variable : variables) {
-        int nodeId = generated.graph.addNode();
+        const int nodeId = generated.graph.addNode();
+
         generated.variableNames.push_back(variable);
         generated.variableNodeIds.push_back(nodeId);
     }
@@ -62,54 +72,82 @@ GeneratedCircuit CircuitGenerator::generate(const std::string& expression) const
     for (const std::string& token : postfix) {
         if (token == "NOT") {
             if (nodeStack.empty()) {
-                throw std::invalid_argument("NOT operator is missing an input.");
+                throw std::invalid_argument(
+                    "NOT operator is missing an input."
+                );
             }
 
-            int inputNode = nodeStack.back();
+            const int inputNode = nodeStack.back();
             nodeStack.pop_back();
 
-            std::unique_ptr<Gate> gate = std::make_unique<NotGate>();
-            int gateNode = generated.graph.addNode();
+            std::unique_ptr<Gate> gate =
+                std::make_unique<NotGate>();
+
+            const int gateNode = generated.graph.addNode();
+
             generated.graph.addWire(inputNode, gateNode, 0);
 
             generated.gateNodeIds.push_back(gateNode);
             generated.gateObjects.push_back(std::move(gate));
+
             nodeStack.push_back(gateNode);
-        } else if (token == "AND" || token == "OR" || token == "XOR") {
+            continue;
+        }
+
+        if (token == "AND" || token == "OR" ||
+            token == "XOR" || token == "NAND" ||
+            token == "NOR" || token == "XNOR") {
+
             if (nodeStack.size() < 2) {
-                throw std::invalid_argument("Binary operator is missing an input.");
+                throw std::invalid_argument(
+                    "Binary operator is missing an input."
+                );
             }
 
-            int rightNode = nodeStack.back();
+            const int rightNode = nodeStack.back();
             nodeStack.pop_back();
-            int leftNode = nodeStack.back();
+
+            const int leftNode = nodeStack.back();
             nodeStack.pop_back();
 
             std::unique_ptr<Gate> gate;
+
             if (token == "AND") {
                 gate = std::make_unique<AndGate>();
             } else if (token == "OR") {
                 gate = std::make_unique<OrGate>();
-            } else {
+            } else if (token == "XOR") {
                 gate = std::make_unique<XorGate>();
+            } else if (token == "NAND") {
+                gate = std::make_unique<NandGate>();
+            } else if (token == "NOR") {
+                gate = std::make_unique<NorGate>();
+            } else {
+                gate = std::make_unique<XnorGate>();
             }
 
-            int gateNode = generated.graph.addNode();
+            const int gateNode = generated.graph.addNode();
+
             generated.graph.addWire(leftNode, gateNode, 0);
             generated.graph.addWire(rightNode, gateNode, 1);
 
             generated.gateNodeIds.push_back(gateNode);
             generated.gateObjects.push_back(std::move(gate));
+
             nodeStack.push_back(gateNode);
-        } else {
-            nodeStack.push_back(generated.getVariableNode(token));
+            continue;
         }
+
+        nodeStack.push_back(generated.getVariableNode(token));
     }
 
     if (nodeStack.size() != 1) {
-        throw std::invalid_argument("The expression could not be converted into one output.");
+        throw std::invalid_argument(
+            "The expression could not be converted into one output."
+        );
     }
 
     generated.outputNodeId = nodeStack.back();
+
     return generated;
 }
