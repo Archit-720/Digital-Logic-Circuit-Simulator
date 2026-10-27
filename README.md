@@ -10,7 +10,7 @@ Physical digital logic experiments rely heavily on breadboards and integrated ci
 * **Archit Jirwan:** Team Lead & Circuit Router (Graph DAGs)
 * **Arnav Negi:** System Architect (Logic Gate OOP)
 * **Ishaan Negi:** Developer (Expression Parser via Stacks)
-* **Gurpindar Singh:** DB & Testing (File I/O)
+* **Gurpindar Singh:** Front-end,DB & Testing (File I/O)
 
 ## Technologies / Tools Used
 * C++ (Standard Template Library)
@@ -36,7 +36,9 @@ Physical digital logic experiments rely heavily on breadboards and integrated ci
 ## Current Project Status / Progress
 * **Status:** In Development (Initial Architecture Phase)
 * **Progress:** 
-  * Project workflow and OOP class hierarchy mapped out.
-  * C++ environment configured and base `Gate` classes drafted.
+  * Project workflow and OOP class hierarchy completed.
+  * C++ environment configured and base `Gate` classes made.
   * Local `.txt` file structures defined for state saving.
-  * Initial GitHub repository established.
+  * GitHub repository established.
+  * Made circuit routing engine.
+  * Made expression parser to convert Boolean Expression from infix to postfix.
