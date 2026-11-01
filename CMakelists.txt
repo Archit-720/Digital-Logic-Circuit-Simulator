@@ -26,7 +26,6 @@ add_executable(DigitalLogicWorkbench
 
     src/qt/MainWindow.cpp
     src/qt/CircuitCanvas.cpp
-    src/qt/CircuitDiagramDialog.cpp
     src/qt/WireItem.cpp
     src/qt/ComponentItem.cpp
     src/qt/TruthTableWidget.cpp
@@ -40,7 +39,6 @@ add_executable(DigitalLogicWorkbench
     src/qt/MainWindow.h
     src/qt/CircuitCanvas.h
     src/qt/ComponentItem.h
-    src/qt/CircuitDiagramDialog.h
     src/qt/TruthTableWidget.h
     src/qt/WireItem.h
     src/qt/KMapWidget.h
